@@ -147,8 +147,6 @@ ready_blocks AS (
         tx_hash
     FROM
         to_do
-
-    LIMIT 80000
 )
 SELECT
     block_number,

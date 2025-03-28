@@ -120,15 +120,15 @@ to_do AS (
         FROM
             flat_tx_hashes
         WHERE 1=1
-            AND block_number >= (SELECT block_number FROM {{ ref('_testnet_block_lookback') }})
-
+            AND block_number >= (SELECT MIN(block_number) FROM {{ ref('streamline__testnet_blocks') }})
+    {% if var('MAIN_SL_RECEIPTS_BY_HASH_REALTIME_TXNS_MODEL_ENABLED', false) %}
         UNION ALL
         SELECT
             block_number,
             tx_hash
         FROM
             {{ ref('test_gold_testnet__fact_transactions_recent') }}
-
+    {% endif %}
     )
 
     EXCEPT
@@ -139,7 +139,7 @@ to_do AS (
     FROM
         {{ ref('streamline__testnet_receipts_by_hash_complete') }}
     WHERE 1=1
-        AND block_number >= (SELECT block_number FROM {{ ref('_testnet_block_lookback') }})
+        AND block_number >= (SELECT MIN(block_number) FROM {{ ref('streamline__testnet_blocks') }})
 ),
 ready_blocks AS (
     SELECT

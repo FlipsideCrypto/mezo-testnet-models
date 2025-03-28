@@ -6,9 +6,9 @@
         func = 'streamline.udf_bulk_rest_api_v2',
         target = "{{this.schema}}.{{this.identifier}}",
         params ={ "external_table" :"testnet_blocks_transactions",
-        "sql_limit" :"14400",
-        "producer_batch_size" :"3600",
-        "worker_batch_size" :"1800",
+        "sql_limit" :"2000",
+        "producer_batch_size" :"1000",
+        "worker_batch_size" :"1000",
         "sql_source" :"{{this.identifier}}",
         "exploded_key": tojson(["result", "result.transactions"]) }
     ),
@@ -51,4 +51,4 @@ FROM
 ORDER BY block_number desc
 
 LIMIT 
-    7200
+    2000

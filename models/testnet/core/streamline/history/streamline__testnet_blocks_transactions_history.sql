@@ -7,8 +7,8 @@
         target = "{{this.schema}}.{{this.identifier}}",
         params ={ "external_table" :"testnet_blocks_transactions",
         "sql_limit" :"2000000",
-        "producer_batch_size" :"7200",
-        "worker_batch_size" :"1800",
+        "producer_batch_size" :"4000",
+        "worker_batch_size" :"1000",
         "sql_source" :"{{this.identifier}}",
         "async_concurrent_requests" :"1",
         "exploded_key": tojson(["result", "result.transactions"]) }

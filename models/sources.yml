@@ -13,7 +13,7 @@ sources:
     tables:
       - name: testnet_blocks
       - name: testnet_transactions
-      - name: testnet_receipts
+      - name: testnet_receipts_by_hash
       - name: testnet_traces
       - name: testnet_confirm_blocks
       - name: testnet_decoded_logs

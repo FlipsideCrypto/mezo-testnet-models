@@ -25,4 +25,4 @@ WHERE
             {{ ref("streamline__get_testnet_chainhead") }}
     )
 )
-WHERE block_number >= 3434730
+WHERE block_number >= 3435128

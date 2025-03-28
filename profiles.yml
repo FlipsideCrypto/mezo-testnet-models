@@ -1,4 +1,4 @@
-<evm_chain>:
+mezo:
   target: prod
   outputs:
     dev:

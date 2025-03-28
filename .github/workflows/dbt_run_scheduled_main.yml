@@ -42,8 +42,4 @@ jobs:
           
       - name: Run Main Models
         run: |
-          dbt run -m "fsc_evm,tag:silver_core" "fsc_evm,tag:gold_core" "fsc_evm,tag:silver_prices" "fsc_evm,tag:gold_prices" "fsc_evm,tag:silver_labels" "fsc_evm,tag:gold_labels"
-
-      - name: Run Streamline Models
-        run: |
-          dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:streamline_decoded_logs_realtime" "fsc_evm,tag:streamline_decoded_logs_complete"
+          dbt run -m "mezo_models,tag:silver_testnet" "mezo_models,tag:gold_testnet" "mezo_models,tag:bronze_testnet"

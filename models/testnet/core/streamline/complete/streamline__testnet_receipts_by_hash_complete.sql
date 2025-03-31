@@ -1,24 +1,25 @@
--- depends_on: {{ ref('bronze_testnet__receipts') }}
+-- depends_on: {{ ref('bronze_testnet__receipts_by_hash') }}
 
 {{ config (
     materialized = "incremental",
-    unique_key = "block_number",
+    unique_key = "complete_testnet_receipts_by_hash_id",
     cluster_by = "ROUND(block_number, -3)",
-    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION on equality(block_number)",
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION on equality(block_number, tx_hash)",
     tags = ['streamline_testnet_complete']
 ) }}
 
 SELECT
+    tx_hash,
     block_number,
     file_name,
-    {{ dbt_utils.generate_surrogate_key(['block_number']) }} AS complete_testnet_receipts_id,
+    {{ dbt_utils.generate_surrogate_key(['block_number', 'tx_hash']) }} AS complete_testnet_receipts_by_hash_id,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp,
     _inserted_timestamp,
     '{{ invocation_id }}' AS _invocation_id
 FROM
     {% if is_incremental() %}
-        {{ ref('bronze_testnet__receipts') }}
+        {{ ref('bronze_testnet__receipts_by_hash') }}
     WHERE
         _inserted_timestamp >= (
             SELECT
@@ -27,7 +28,7 @@ FROM
                 {{ this }}
         )
     {% else %}
-        {{ ref('bronze_testnet__receipts_fr') }}
+        {{ ref('bronze_testnet__receipts_by_hash_fr') }}
     {% endif %}
 
-QUALIFY (ROW_NUMBER() OVER (PARTITION BY block_number ORDER BY _inserted_timestamp DESC)) = 1
+QUALIFY (ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY block_number desc, _inserted_timestamp DESC)) = 1

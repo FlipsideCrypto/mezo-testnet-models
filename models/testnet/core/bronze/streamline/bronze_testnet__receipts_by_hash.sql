@@ -5,15 +5,15 @@
 
 WITH meta AS (
     SELECT
-        registered_on AS _inserted_timestamp,
+        job_created_time AS _inserted_timestamp,
         file_name,
         CAST(SPLIT_PART(SPLIT_PART(file_name, '/', 4), '_', 1) AS INTEGER) AS partition_key
     FROM
         TABLE(
-            information_schema.external_table_files(
-                table_name => '{{ source( "bronze_streamline", "testnet_receipts") }}'
-            )
-        ) A
+            information_schema.external_table_file_registration_history(
+                start_time => DATEADD('day', -3, CURRENT_TIMESTAMP()),
+                table_name => '{{ source( "bronze_streamline", "testnet_receipts_by_hash") }}')
+            ) A
 )
 SELECT
     s.*,
@@ -21,16 +21,16 @@ SELECT
     b._inserted_timestamp,
     COALESCE(
         s.value :"BLOCK_NUMBER" :: STRING,
-        s.value :"block_number" :: STRING,
         s.metadata :request :"data" :id :: STRING,
         PARSE_JSON(
             s.metadata :request :"data"
         ) :id :: STRING
-    ) :: INT AS block_number
+    ) :: INT AS block_number,
+    s.value :"TX_HASH" :: STRING AS tx_hash
 FROM
     {{ source(
         "bronze_streamline",
-        "testnet_receipts"
+        "testnet_receipts_by_hash"
     ) }}
     s
     JOIN meta b

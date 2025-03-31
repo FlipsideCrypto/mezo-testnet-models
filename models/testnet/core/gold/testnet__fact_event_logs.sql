@@ -10,7 +10,7 @@ WITH base AS (
 
     SELECT
         block_number,
-        receipts_json :transactionHash :: STRING AS tx_hash,
+        tx_hash,
         receipts_json,
         receipts_json :logs AS full_logs
     FROM

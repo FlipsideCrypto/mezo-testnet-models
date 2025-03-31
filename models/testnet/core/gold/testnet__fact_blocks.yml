@@ -48,16 +48,6 @@ models:
         description: '{{ doc("evm_transactions_root") }}'
       - name: LOGS_BLOOM
         description: '{{ doc("evm_logs_bloom")  }}'
-      - name: BLOB_GAS_USED
-        description: '{{ doc("evm_blob_gas_used") }}'
-      - name: EXCESS_BLOB_GAS
-        description: '{{ doc("evm_excess_blob_gas") }}'
-      - name: PARENT_BEACON_BLOCK_ROOT
-        description: '{{ doc("evm_parent_beacon_block_root") }}'
-      - name: WITHDRAWALS
-        description: '{{ doc("evm_withdrawals") }}'
-      - name: WITHDRAWALS_ROOT
-        description: '{{ doc("evm_withdrawals_root") }}'
       - name: FACT_BLOCKS_ID
         description: '{{ doc("evm_pk") }}'
       - name: INSERTED_TIMESTAMP

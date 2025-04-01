@@ -6,22 +6,30 @@
         func = 'streamline.udf_bulk_rest_api_v2',
         target = "{{this.schema}}.{{this.identifier}}",
         params ={ "external_table" :"testnet_blocks_transactions",
-        "sql_limit" :"2000",
-        "producer_batch_size" :"1000",
-        "worker_batch_size" :"1000",
+        "sql_limit" :"7200",
+        "producer_batch_size" :"3600",
+        "worker_batch_size" :"1800",
         "sql_source" :"{{this.identifier}}",
         "exploded_key": tojson(["result", "result.transactions"]) }
     ),
     tags = ['streamline_testnet_realtime']
 ) }}
 
-WITH to_do AS (
+WITH last_3_days AS (
+    SELECT block_number
+    FROM {{ ref("_testnet_block_lookback") }}
+),
+to_do AS (
     SELECT block_number
     FROM {{ ref("streamline__testnet_blocks") }}
+    WHERE block_number IS NOT NULL 
+        AND block_number >= (SELECT block_number FROM last_3_days)
     EXCEPT
     SELECT block_number
     FROM {{ ref("streamline__testnet_blocks_complete") }} b
     INNER JOIN {{ ref("streamline__testnet_transactions_complete") }} t USING(block_number)
+    WHERE 1=1
+        AND block_number >= (SELECT block_number FROM last_3_days)
 ),
 ready_blocks AS (
     SELECT block_number
@@ -32,7 +40,7 @@ SELECT
     ROUND(block_number, -3) AS partition_key,
     live.udf_api(
         'POST',
-        'https://lb.drpc.org/ogrpc?network=mezo-testnet&dkey={API_KEY}',
+        '{Service}/{Authentication}',
         OBJECT_CONSTRUCT(
             'Content-Type', 'application/json',
             'fsc-quantum-state', 'streamline'
@@ -51,4 +59,4 @@ FROM
 ORDER BY block_number desc
 
 LIMIT 
-    2000
+    7200

@@ -139,7 +139,7 @@ to_do AS (
     FROM
         {{ ref('streamline__testnet_receipts_by_hash_complete') }}
     WHERE 1=1
-        AND block_number >= (SELECT MIN(block_number) FROM {{ ref('streamline__testnet_blocks') }})
+        AND block_number >= (SELECT block_number FROM {{ ref('_testnet_block_lookback') }})
 ),
 ready_blocks AS (
     SELECT

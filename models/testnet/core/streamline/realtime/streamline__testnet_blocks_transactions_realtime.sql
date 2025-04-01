@@ -6,9 +6,9 @@
         func = 'streamline.udf_bulk_rest_api_v2',
         target = "{{this.schema}}.{{this.identifier}}",
         params ={ "external_table" :"testnet_blocks_transactions",
-        "sql_limit" :"7200",
-        "producer_batch_size" :"3600",
-        "worker_batch_size" :"1800",
+        "sql_limit" :"2000",
+        "producer_batch_size" :"1000",
+        "worker_batch_size" :"1000",
         "sql_source" :"{{this.identifier}}",
         "exploded_key": tojson(["result", "result.transactions"]) }
     ),
@@ -40,7 +40,7 @@ SELECT
     ROUND(block_number, -3) AS partition_key,
     live.udf_api(
         'POST',
-        '{Service}/{Authentication}',
+        'https://lb.drpc.org/ogrpc?network=mezo-testnet&dkey={API_KEY}',
         OBJECT_CONSTRUCT(
             'Content-Type', 'application/json',
             'fsc-quantum-state', 'streamline'
@@ -59,4 +59,4 @@ FROM
 ORDER BY block_number desc
 
 LIMIT 
-    7200
+    2000

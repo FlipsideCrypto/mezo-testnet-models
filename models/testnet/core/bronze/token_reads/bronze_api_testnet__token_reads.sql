@@ -1,5 +1,4 @@
-{%- set node_url = var('GLOBAL_NODE_URL', '{Service}/{Authentication}') -%}
-{%- set node_secret_path = var('GLOBAL_NODE_SECRET_PATH', '') -%}
+{% set node_secret_path = var("GLOBAL_NODE_SECRET_PATH") %}
 
 {{ config(
     materialized = 'incremental',
@@ -85,7 +84,7 @@ node_call AS (
         *,
         live.udf_api(
             'POST',
-            '{{ node_url }}',
+            'https://lb.drpc.org/ogrpc?network=mezo-testnet&dkey={API_KEY}',
             {},
             batch_rpc_request,
            '{{ node_secret_path }}'

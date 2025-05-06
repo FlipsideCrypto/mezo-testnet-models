@@ -22,6 +22,7 @@ WITH silver_traces AS (
             ) }}
         WHERE
             1 = 1
+            and trace_json:failed is null
 
 {% if is_incremental() %}
 AND modified_timestamp > (

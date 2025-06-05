@@ -1,5 +1,5 @@
-name: dbt_run_streamline_chainhead
-run-name: dbt_run_streamline_chainhead
+name: dbt_run_streamline_chainhead_testnet
+run-name: dbt_run_streamline_chainhead_testnet
 
 on:
   workflow_dispatch:

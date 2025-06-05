@@ -1,7 +1,7 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: "mezo_models" # replace with the name of the chain
+name: "mezo_testnet_models" # replace with the name of the chain
 version: "1.0.0"
 config-version: 2
 
@@ -26,7 +26,7 @@ clean-targets: # directories to be removed by `dbt clean`
   - "dbt_packages"
 
 tests:
-  mezo_models: # replace with the name of the chain
+  mezo_testnet_models: # replace with the name of the chain
     +store_failures: true # all tests
 
 on-run-start:
@@ -51,7 +51,7 @@ query-comment:
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
 models:
-  mezo_models: # replace with the name of the chain
+  mezo_testnet_models: # replace with the name of the chain
     +copy_grants: true
     +persist_docs:
       relation: true

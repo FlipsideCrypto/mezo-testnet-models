@@ -5,6 +5,8 @@ on:
   workflow_dispatch:
     branches:
       - "main"
+  schedule:
+    - cron: "51 * * * *"
 
 env:
   DBT_PROFILES_DIR: ./

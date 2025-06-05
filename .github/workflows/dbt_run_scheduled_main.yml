@@ -44,7 +44,7 @@ jobs:
           
       - name: Run Main Models
         run: |
-          dbt run -m "mezo_models,tag:silver_testnet" "mezo_models,tag:gold_testnet" "mezo_models,tag:bronze_testnet"
+          dbt run -m "mezo_testnet_models,tag:silver_testnet" "mezo_testnet_models,tag:gold_testnet" "mezo_testnet_models,tag:bronze_testnet"
 
   notify-failure:
     needs: [run_dbt_jobs]

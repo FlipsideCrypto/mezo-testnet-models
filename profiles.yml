@@ -1,4 +1,4 @@
-mezo:
+mezo-testnet:
   target: prod
   outputs:
     dev:

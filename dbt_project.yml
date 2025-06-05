@@ -39,7 +39,7 @@ on-run-end:
 dispatch:
   - macro_namespace: dbt
     search_order:
-      - mezo-models
+      - mezo-testnet-models
       - dbt_snowflake_query_tags
       - dbt
 
